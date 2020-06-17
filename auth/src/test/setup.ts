@@ -2,6 +2,7 @@ import {MongoMemoryServer} from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import {app} from '../app';
+import {User} from '../models/user';
 
 declare global {
   namespace NodeJS {
@@ -32,6 +33,12 @@ beforeEach(async () => {
     await collection.deleteMany({});
   }
 });
+
+// check that users are actually created
+// afterEach(async () => {
+//   const user = await User.findOne({});
+//   console.log('user', user);
+// });
 
 afterAll(async () => {
   await mongo.stop();

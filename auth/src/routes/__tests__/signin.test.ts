@@ -32,7 +32,7 @@ it('fails when an incorrect password is supplied', async () => {
     .expect(400);
 });
 
-it('responds with a cookie when given valid credentials', async () => {
+it.only('responds with a cookie when given valid credentials', async () => {
   await request(app)
     .post(signupUri)
     .send({

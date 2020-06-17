@@ -1,4 +1,5 @@
 import {scrypt, randomBytes} from 'crypto';
+
 import {promisify} from 'util';
 
 const scryptAsync = promisify(scrypt);

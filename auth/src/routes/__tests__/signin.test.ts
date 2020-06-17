@@ -42,7 +42,7 @@ it('responds with a cookie when given valid credentials', async () => {
     .expect(201);
 
   const currentuser = await request(app).get('api/users/currentuser');
-  console.log('currentuser', currentuser.status);
+  // console.log('currentuser', currentuser.status);
 
   const response = await request(app).post(signinUri).send({
     email: 'test@test.com',

@@ -1,5 +1,6 @@
 import request from 'supertest';
 import {app} from '../../app';
+import {getUserAuthCookie} from '../../test/getUserAuthCookie';
 
 const signinUri = '/api/users/signin';
 const signupUri = '/api/users/signup';
@@ -32,21 +33,40 @@ it('fails when an incorrect password is supplied', async () => {
     .expect(400);
 });
 
-it.only('responds with a cookie when given valid credentials', async () => {
-  await request(app)
+it('responds with a cookie when given valid credentials', async () => {
+  const signupResponse = await request(app)
     .post(signupUri)
     .send({
       email: 'test@test.com',
       password: 'password',
     })
     .expect(201);
+  const cookie = signupResponse.get('Set-Cookie');
 
-  const currentuser = await request(app).get('api/users/currentuser');
-  // console.log('currentuser', currentuser.status);
+  const response = await request(app)
+    .post(signinUri)
+    .set('Cookie', cookie)
+    .send({
+      email: 'test@test.com',
+      password: 'password',
+    });
+  // .expect(200);
+
+  // console.log('response status', response.status);
+  // console.log('response header', response.header);
+  // expect(response.get('Set-Cookie')).toBeDefined();
+});
+
+it('v2 using getUserAuth - responds with a cookie when given valid credentials', async () => {
+  const cookie = await getUserAuthCookie();
+  expect(cookie).toBeTruthy();
+
+  const email = 'test@test.com';
+  const password = 'password';
 
   const response = await request(app).post(signinUri).send({
-    email: 'test@test.com',
-    password: 'password',
+    email,
+    password,
   });
   // .expect(200);
 

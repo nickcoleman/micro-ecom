@@ -1,8 +1,7 @@
-import {MongoMemoryServer} from 'mongodb-memory-server';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
-import {app} from '../app';
-import {User} from '../models/user';
+import { app } from '../app';
 
 declare global {
   namespace NodeJS {
@@ -22,7 +21,7 @@ beforeAll(async () => {
 
   await mongoose.connect(mongoUri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   });
 });
 
@@ -33,12 +32,6 @@ beforeEach(async () => {
     await collection.deleteMany({});
   }
 });
-
-// check that users are actually created
-// afterEach(async () => {
-//   const user = await User.findOne({});
-//   console.log('user', user);
-// });
 
 afterAll(async () => {
   await mongo.stop();
@@ -53,7 +46,7 @@ global.signin = async () => {
     .post('/api/users/signup')
     .send({
       email,
-      password,
+      password
     })
     .expect(201);
 

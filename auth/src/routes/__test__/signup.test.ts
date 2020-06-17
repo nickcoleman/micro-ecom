@@ -1,11 +1,10 @@
 import request from 'supertest';
-
 import {app} from '../../app';
 
 const signupUri = '/api/users/signup';
 
-it('returns a 201 on successful signup ', async () => {
-  await request(app)
+it('returns a 201 on successful signup', async () => {
+  return request(app)
     .post(signupUri)
     .send({
       email: 'test@test.com',
@@ -14,45 +13,43 @@ it('returns a 201 on successful signup ', async () => {
     .expect(201);
 });
 
-it('returns a 400 on invalid email', async () => {
-  await request(app)
+it('returns a 400 with an invalid email', async () => {
+  return request(app)
     .post(signupUri)
     .send({
-      email: 'badEmail',
+      email: 'alskdflaskjfd',
       password: 'password',
     })
     .expect(400);
 });
 
-it('returns a 400 on invalid password', async () => {
-  await request(app)
+it('returns a 400 with an invalid password', async () => {
+  return request(app)
     .post(signupUri)
     .send({
-      email: 'test@test.com',
-      password: 'x',
+      email: 'alskdflaskjfd',
+      password: 'p',
     })
     .expect(400);
 });
 
-it('returns a 400 with missing email and/or password ', async () => {
-  await request(app)
-    .post(signupUri)
-    .send({
-      email: '',
-      password: 'password',
-    })
-    .expect(400);
+it('returns a 400 with missing email and password', async () => {
   await request(app)
     .post(signupUri)
     .send({
       email: 'test@test.com',
-      password: '',
     })
     .expect(400);
-  await request(app).post(signupUri).send({}).expect(400);
+
+  await request(app)
+    .post(signupUri)
+    .send({
+      password: 'alskjdf',
+    })
+    .expect(400);
 });
 
-it('should not allow duplicate emails', async () => {
+it('disallows duplicate emails', async () => {
   await request(app)
     .post(signupUri)
     .send({
@@ -60,6 +57,7 @@ it('should not allow duplicate emails', async () => {
       password: 'password',
     })
     .expect(201);
+
   await request(app)
     .post(signupUri)
     .send({
@@ -69,7 +67,7 @@ it('should not allow duplicate emails', async () => {
     .expect(400);
 });
 
-it('should set a cookie after a successful sign in', async () => {
+it('sets a cookie after successful signup', async () => {
   const response = await request(app)
     .post(signupUri)
     .send({

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../app';
+import { app } from '../../app';
 import mongoose from 'mongoose';
 
 it('returns a 404 if the ticket is not found', async () => {
@@ -9,7 +9,7 @@ it('returns a 404 if the ticket is not found', async () => {
 });
 
 it('returns the ticket if the ticket is found', async () => {
-  const title = 'dog';
+  const title = 'concert';
   const price = 20;
 
   const response = await request(app)

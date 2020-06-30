@@ -1,7 +1,7 @@
 import nats from 'node-nats-streaming';
 
-import { TicketCreatedListener} from './events/ticket-created-listener'
-import { randomBytes } from 'crypto';
+import {TicketCreatedListener} from '@eticket/common/TicketCreatedListener';
+import {randomBytes} from 'crypto';
 
 console.clear();
 
@@ -20,11 +20,9 @@ stan.on('connect', () => {
   });
 
   // create the ticket listner
-  const listner = new TicketCreatedListener(stan)
+  const listner = new TicketCreatedListener(stan);
   listner.listen();
 });
 
 process.on('SIGINT', () => stan.close());
 process.on('SIGTERM', () => stan.close());
-
-
